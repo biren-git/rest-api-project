@@ -43,8 +43,6 @@ public class UserController {
         return userService.getAllUsersWithoutPagination();
     }
 
-
-    
     @GetMapping("/paginate")
     public Page<User> getAllUsers(
         @RequestParam(defaultValue = "0") int page,
@@ -58,15 +56,27 @@ public class UserController {
         return userService.getAllUsers(pageable);
     }
 
-    
     @GetMapping("/search/name")
     public List<User> getUsersByName(@RequestParam String name) {
         return userService.findUsersByName(name);
     }
 
-   
     @GetMapping("/search/email")
     public List<User> getUsersByEmailDomain(@RequestParam String domain) {
         return userService.findUsersByEmailDomain(domain);
+    }
+
+    /*** New Mappings for Enrolling Users and Assigning Videos ***/
+
+    // Enroll user in a yoga class
+    @PostMapping("/{userId}/enroll/{classId}")
+    public void enrollUserInClass(@PathVariable Long userId, @PathVariable Long classId) {
+        userService.enrollUserInClass(userId, classId);
+    }
+
+    // Assign an instructional video to a user
+    @PostMapping("/{userId}/videos/{videoId}")
+    public void addVideoToUser(@PathVariable Long userId, @PathVariable Long videoId) {
+        userService.addVideoToUser(userId, videoId);
     }
 }
